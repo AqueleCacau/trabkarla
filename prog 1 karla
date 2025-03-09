@@ -1,0 +1,71 @@
+print("Sabores de Pizza")
+
+from tabulate import tabulate
+
+
+matriz = [
+    ['1- Calabresa', 'R$25'],
+    ['2- Portuguesa', 'R$30'],
+    ['3- Napolitana', 'R$25'],
+    ['4- Peperoni', 'R$30'],
+    ['5- Quatro Queijos', 'R$40'],
+    ['6- Marguerita', 'R$20'],
+    ['7- Frango com Catupiry', 'R$40'],
+    ['8- Vegetariana', 'R$20'],
+    ['9- Alho e Óleo', 'R$25']
+]
+
+headers = ["Sabores", "Preços"]
+
+print("\n----- Bem-vindo à Pizzaria -----\n")
+print(tabulate(matriz, headers, tablefmt='grid'))
+
+preçonum = [
+    ['25', '30', '25'],
+    ['30', '40', '20'],
+    ['40', '20', '25']
+]
+
+quantidades = [[0 for _ in range(3)] for _ in range(3)]
+total = 0
+
+while True:
+    num_pizz = input("\nDigite o número da pizza desejada (Ou digite 'sair' para encerrar o pedido): ")
+
+    if num_pizz.lower() == 'sair':
+        break
+
+    pedido = False
+    for i in range(3):
+        for j in range(3):
+            if num_pizz.strip() == matriz[i * 3 + j][0].split("-")[0]:
+                quantidade = int(input(f"Quantas unidades de {matriz[i * 3 + j][0]} você deseja? "))
+                
+                quantidades[i][j] += quantidade
+                total += quantidade * int(preçonum[i][j])
+                
+                pedido = True
+                break
+        if pedido:
+            break
+
+    if not pedido:
+        print("Número de pizza inválido! Tente novamente.")
+
+pedidos = []
+for i in range(3):
+    for j in range(3):
+        if quantidades[i][j] > 0:
+            pedidos.append([
+                matriz[i * 3 + j][0],  
+                quantidades[i][j],  a
+                f"R${preçonum[i][j]}",  
+                f"R${quantidades[i][j] * int(preçonum[i][j])}" 
+            ])
+
+if pedidos:
+    print("\n----- Resumo do Pedido -----")
+    print(tabulate(pedidos, headers=["Sabor", "Quantidade", "Preço", "Total"], tablefmt="grid"))
+    print(f"\nTotal a pagar: R$ {total:.2f}")
+else:
+    print("\nNenhum pedido realizado.")
